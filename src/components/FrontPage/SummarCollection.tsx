@@ -8,8 +8,10 @@ import { customStyles } from "../Common/ViewProductInformation";
 import { productData } from "../UtlitiFunction/ProductData";
 import Link from "next/link";
 import ProductCart from "../Common/ProductCart";
+import { useGetProductQuery } from "../Redux/Api/productApi";
 
 const SummerCollection = () => {
+  const { data, isLoading, isError } = useGetProductQuery({});
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleNext = () => {
@@ -23,6 +25,16 @@ const SummerCollection = () => {
       setCurrentIndex(currentIndex - 1);
     }
   };
+
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+
+  if (isError || !data?.data?.data) {
+    return <h1>Something went wrong. Please try again later.</h1>;
+  }
+  const productData = data?.data?.data || [];
+
   return (
     <div className=" w-full container mx-auto md:px-0 px-8 py-12">
       <div className=" flex justify-between items-center">
@@ -57,7 +69,7 @@ const SummerCollection = () => {
         exit={{ x: -100 }}
         transition={{ duration: 2 }}
       >
-        {productData?.slice(currentIndex, currentIndex + 8).map((item) => (
+        {productData?.slice(currentIndex, currentIndex + 8).map((item: any) => (
           <ProductCart item={item} key={item.id} discount={true} />
         ))}
       </motion.div>

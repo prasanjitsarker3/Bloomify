@@ -24,6 +24,8 @@ const ProductCart: React.FC<ProductCartProps> = ({
       toast.error("Item already in cart!");
     }
   };
+
+  console.log("Item", item);
   return (
     <motion.div
       whileHover={{
@@ -41,17 +43,22 @@ const ProductCart: React.FC<ProductCartProps> = ({
           }`}
         >
           <Image
-            src={item.img}
+            src={
+              Array.isArray(item?.photo) && item?.photo.length > 1
+                ? item?.photo[1]?.img
+                : item?.photo?.[0]?.img ||
+                  "https://img.freepik.com/premium-photo/home-green-plant-spathiphyllum-pot-with-watering-can-concept-house-plants_143127-292.jpg?ga=GA1.1.406508785.1728154460&semt=ais_hybrid" // Default image
+            }
             alt={item.name}
             width={500}
             height={500}
-            className=" h-full w-full"
+            className="h-full w-full"
           />
           {discount && (
-            <div className=" absolute top-0 right-2 primaryColorBg px-2 text-white text-xs rounded-b-full pb-2 flex flex-col items-center">
+            <div className=" absolute top-0 right-2 primaryColorBg px-3 text-white text-xs rounded-b-full pb-2 flex flex-col items-center">
               <h1>Up</h1>
               <h1>To</h1>
-              <h1>40%</h1>
+              <h1>{item?.discount}%</h1>
             </div>
           )}
         </div>
@@ -69,7 +76,7 @@ const ProductCart: React.FC<ProductCartProps> = ({
         <div className=" flex justify-between pb-3 pt-6 items-center">
           <h1 className=" text-lg  text-slate-700">{item.name}</h1>
           <h1 className=" text-lg  vigaRegular text-slate-800">
-            RS {item.price}
+            USD: ${item.price}
           </h1>
         </div>
         <button

@@ -3,27 +3,16 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import {
-  ArrowRight,
-  ChevronDown,
-  Facebook,
-  Instagram,
-  Linkedin,
-  Menu,
-  Search,
-  ShoppingBag,
-  Twitter,
-  UserRound,
-  X,
-} from "lucide-react";
+import { Search, ShoppingBag, UserRound, X } from "lucide-react";
 import { RiMenu2Fill } from "react-icons/ri";
 import { getCartLength } from "../UtlitiFunction/getCartLength";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolling, setScrolling] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
+  const pathname = usePathname();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -56,27 +45,17 @@ const Header = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const updateCartCount = () => {
-      setCartCount(getCartLength());
-    };
-
-    updateCartCount();
-    window.addEventListener("storage", updateCartCount);
-    const intervalId = setInterval(updateCartCount, 1000);
-
-    return () => {
-      window.removeEventListener("storage", updateCartCount);
-      clearInterval(intervalId);
-    };
-  }, []);
-
   return (
     <motion.header
-      className={`${
-        scrolling
-          ? "primaryColorBg fixed dark:bg-slate-800 w-full z-40 "
-          : "w-full z-40 fixed primaryColorBg"
+      className={`
+      ${
+        pathname === "/"
+          ? scrolling
+            ? "primaryColorBg fixed top-0 pt-0 mt-0 dark:bg-slate-800 w-full z-40"
+            : "w-full z-40 fixed bg-none"
+          : scrolling
+          ? "primaryColorBg fixed top-0 mt-0 pt-0 dark:bg-slate-800 w-full z-40"
+          : "w-full z-40 fixed primaryColorBg top-0 pt-0 mt-0"
       }`}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -85,9 +64,6 @@ const Header = () => {
       <div className="w-full container mx-auto md:px-0 px-0">
         <div className="w-full flex justify-between items-center md:px-0 px-2 text-white py-3">
           {/* First Div */}
-          <button className="md:hidden text-white" onClick={toggleMenu}>
-            {isOpen ? <X size={24} /> : <RiMenu2Fill size={24} />}
-          </button>
           <div className="flex-1 flex justify-start items-center md:pl-0 pl-3">
             <div className="flex items-center gap-3">
               <Image
@@ -95,11 +71,11 @@ const Header = () => {
                 alt=""
                 width={60}
                 height={60}
-                className=" h-12"
+                className=" md:h-12 md:w-12 h-8 w-8"
               />
               <Link
                 href={"/"}
-                className="text-2xl md:text-3xl font-bold vigaRegular"
+                className="text-xl md:text-3xl font-bold vigaRegular"
               >
                 Bloomify
               </Link>
@@ -109,55 +85,128 @@ const Header = () => {
           {/* Second Div */}
           <div className=" hidden md:block flex-1 flex justify-center items-center">
             <div className="flex justify-center items-center text-center gap-3">
-              <h1 className="text-lg primaryColor cursor-pointer">Home</h1>
-              <h1 className="text-lg primaryColor cursor-pointer">Category</h1>
-              <h1 className="text-lg primaryColor cursor-pointer">Product</h1>
-              <h1 className="text-lg primaryColor cursor-pointer">Deal</h1>
-              <h1 className="text-lg primaryColor cursor-pointer">Contact</h1>
+              <Link href={"/"} className="text-lg text-white cursor-pointer">
+                Home
+              </Link>
+              <Link
+                href={`/category/${1}`}
+                className="text-lg text-white cursor-pointer"
+              >
+                Category
+              </Link>
+              <Link
+                href={"/product"}
+                className="text-lg text-white cursor-pointer"
+              >
+                Product
+              </Link>
+              <Link
+                href={"/about"}
+                className="text-lg text-white cursor-pointer"
+              >
+                Contact
+              </Link>
             </div>
           </div>
 
           {/* Third Div */}
-          <div className="flex-1 flex items-center gap-5 justify-end">
-            <div className="flex items-center rounded-full px-2 md:px-6 py-2  text-white border border-white">
+          <div className="flex-1 flex items-center gap-5 justify-end md:pr-0 pr-12">
+            <div className="flex items-center rounded-full px-2 md:px-6 md:py-2 py-1  text-white border border-white">
               <button className="">
                 <Search className="h-5 w-5" />
               </button>
               <input
                 type="text"
                 placeholder="Search"
-                className="bg-transparent outline-none w-48 px-2 text-sm  hidden sm:block"
+                className="bg-transparent placeholder:text-white outline-none w-48 px-2 text-sm "
               />
             </div>
 
-            <div className="relative flex items-center">
+            <div className="hidden md:block relative flex items-center">
               <ShoppingBag className="h-6 w-6 text-white" />
               <span className="absolute -top-1 -right-2 bg-gray-600 text-white text-xs font-semibold w-4 h-4 rounded-full flex items-center justify-center">
-                {cartCount}
+                0
               </span>
             </div>
 
-            <div className="cursor-pointer">
+            {/* <div className="cursor-pointer hidden md:block">
               <UserRound />
+            </div> */}
+            <div>
+              <Link href={"/login"}>
+                <button className=" py-1 px-6 rounded-full border border-white">
+                  Sign In
+                </button>
+              </Link>
             </div>
           </div>
+          <button className="md:hidden text-white" onClick={toggleMenu}>
+            {isOpen ? <X size={24} /> : <RiMenu2Fill size={24} />}
+          </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
-      <motion.div
-        initial={{ height: 0 }}
-        animate={{ height: isOpen ? "auto" : 0 }}
-        className="overflow-hidden md:hidden"
-      >
-        <div className="flex flex-col items-center bg-white dark:bg-slate-800 pb-32 space-y-3">
-          <h1 className="text-lg primaryColor cursor-pointer">Home</h1>
-          <h1 className="text-lg text-white cursor-pointer">Category</h1>
-          <h1 className="text-lg text-white cursor-pointer">Product</h1>
-          <h1 className="text-lg text-white cursor-pointer">Deal</h1>
-          <h1 className="text-lg text-white cursor-pointer">Contact</h1>
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="fixed top-0 h-[100vh] bg-white shadow-lg z-40 w-60 left-0 md:hidden">
+          <div className="  w-full p-3 ">
+            <div className="bg-[#028355] flex justify-between items-center p-1 text-white">
+              <div className="flex items-center gap-3 ">
+                <Image
+                  src={"/leaf.png"}
+                  alt=""
+                  width={60}
+                  height={60}
+                  className=" md:h-12 md:w-12 h-8 w-8 bg-[#028355]"
+                />
+                <Link
+                  href={"/"}
+                  className="text-xl md:text-3xl font-bold vigaRegular"
+                >
+                  Bloomify
+                </Link>
+              </div>
+              <div
+                onClick={() => setIsOpen(false)}
+                className="bg-[#028355] text-white cursor-pointer"
+              >
+                <X />
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col p-4 space-y-1">
+            <Link
+              href={"/"}
+              onClick={() => setIsOpen(false)}
+              className="text-lg text-black cursor-pointer py-1 px-1 hover:bg-[#028355] hover:text-white"
+            >
+              Home
+            </Link>
+            <Link
+              href={`/category/${1}`}
+              onClick={() => setIsOpen(false)}
+              className="text-lg text-black cursor-pointer py-1 px-1 hover:bg-[#028355] hover:text-white"
+            >
+              Category
+            </Link>
+            <Link
+              href={"/product"}
+              onClick={() => setIsOpen(false)}
+              className="text-lg text-black cursor-pointer py-1 px-1 hover:bg-[#028355] hover:text-white"
+            >
+              Product
+            </Link>
+            <Link
+              href={"/about"}
+              onClick={() => setIsOpen(false)}
+              className="text-lg text-black cursor-pointer py-1 px-1 hover:bg-[#028355] hover:text-white"
+            >
+              Contact
+            </Link>
+          </div>
         </div>
-      </motion.div>
+      )}
     </motion.header>
   );
 };

@@ -12,47 +12,36 @@ import { FiShoppingBag } from "react-icons/fi";
 import RelatedProduct from "@/components/FrontPage/ReleventProduct";
 import { productInformationData } from "@/components/UtlitiFunction/ProductData";
 import { getCartLength } from "@/components/UtlitiFunction/AddProduct";
+import ShoppingBag from "@/components/Common/ShoppingBag";
+import { useGetSingleProductQuery } from "@/components/Redux/Api/productApi";
 
-const ProductView = () => {
+interface Params {
+  id: string;
+}
+const ProductView = ({ params }: { params: Params }) => {
+  const { id } = params;
+  console.log("View Product Id", id);
+  const { data, isLoading } = useGetSingleProductQuery(id);
+
   const [cartCount, setCartCount] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const productData = {
-    id: 1,
-    img: [
-      {
-        id: 1,
-        image:
-          "https://img.freepik.com/free-photo/still-life-with-indoor-plants_23-2151024949.jpg?ga=GA1.1.406508785.1728154460&semt=ais_hybrid",
-      },
-      {
-        id: 2,
-        image:
-          "https://img.freepik.com/free-photo/indoor-plants-studio_23-2151022044.jpg?ga=GA1.1.406508785.1728154460&semt=ais_hybrid",
-      },
-      {
-        id: 3,
-        image:
-          "https://img.freepik.com/premium-photo/monstera-obliqua-fiddle-leaf-fig-ficus-lyratain-concrete-pot-white-wood-table-wall-surface-with-copy-space-araceae-window-leaf-plant_63726-2136.jpg?ga=GA1.1.406508785.1728154460&semt=ais_hybrid",
-      },
-      {
-        id: 4,
-        image:
-          "https://img.freepik.com/premium-photo/monstera-obliqua-fiddle-leaf-fig-ficus-lyratain-concrete-pot-white-wood-table-wall-surface-with-copy-space-araceae-window-leaf-plant_63726-2136.jpg?ga=GA1.1.406508785.1728154460&semt=ais_hybrid",
-      },
-    ],
+  const handleNext = () => {
+    if (productData?.photo?.length) {
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === productData.photo.length - 1 ? 0 : prevIndex + 1
+      );
+    }
   };
 
-  const handleNext = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === productData.img.length - 1 ? 0 : prevIndex + 1
-    );
-  };
   const handlePrev = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === 0 ? productData.img.length - 1 : prevIndex - 1
-    );
+    if (productData?.photo?.length) {
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === 0 ? productData.photo.length - 1 : prevIndex - 1
+      );
+    }
   };
+
   const handleThumbnailClick = (index: number) => {
     setCurrentImageIndex(index);
   };
@@ -78,27 +67,29 @@ const ProductView = () => {
     };
   }, []);
 
+  if (isLoading || !data || !data.data || !data.data.photo) {
+    return <h1>Loading...</h1>;
+  }
+  const productData = data?.data;
+  console.log("Cate Id", productData);
+
   return (
     <div className="bg-[#F4F8FF]">
       <div className="w-full container mx-auto  md:px-0 px-4 ">
-        <div className="primaryColorBg flex flex-col justify-center items-center p-2 md:p-6 text-white fixed top-1/2 right-0 transform -translate-y-1/2 rounded-l-xl z-10">
-          <FiShoppingBag />
-          <h1>Your Bug</h1>
-          <h1>{cartCount}</h1>
-        </div>
+        <ShoppingBag />
 
         <h1 className="font-medium text-lg text-slate-900 py-3 pt-20">
           Feature Product / <span className="primaryColor">New Arrival</span>
         </h1>
 
-        <div className="grid grid-cols-12 gap-6 md:gap-12 py-8">
+        <div className="grid grid-cols-12 gap-6 md:gap-12 2xl:py-8 md:py-4 py-3">
           {/* Image & Thumbnail Section */}
-          <div className="col-span-12 md:col-span-6 flex flex-col items-center bg-[#f6f5fd] py-6 md:py-8">
+          <div className="col-span-12 md:col-span-6 flex flex-col items-center bg-[#e6f3ee] py-6 md:py-8">
             <div className="relative w-full flex items-center justify-center overflow-hidden">
               {/* Left Button */}
               <button
                 onClick={handlePrev}
-                className="absolute left-1 md:left-2 top-1/2 transform -translate-y-1/2 h-8 w-8 z-10 flex justify-center items-center border border-[#8f71e1] hover:bg-[#8f71e1] hover:text-white text-[#8f71e1] rounded-full"
+                className="absolute left-1 md:left-2 top-1/2 transform -translate-y-1/2 md:h-10 md:w-10 h-8 w-8 z-10 flex justify-center items-center border border-[#028355] hover:bg-[#028355] hover:text-white text-[#028355] rounded-full"
               >
                 <ArrowLeft />
               </button>
@@ -107,7 +98,7 @@ const ProductView = () => {
               <div className="h-64 md:h-80 2xl:h-96 w-full relative flex justify-center items-center">
                 <AnimatePresence mode="wait">
                   <motion.div
-                    key={productData.img[currentImageIndex].id}
+                    key={productData.photo[currentImageIndex].id}
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -50 }}
@@ -115,7 +106,7 @@ const ProductView = () => {
                     className="absolute w-auto h-full flex justify-center items-center"
                   >
                     <Image
-                      src={productData.img[currentImageIndex].image}
+                      src={productData.photo[currentImageIndex].img}
                       alt="Product"
                       width={500}
                       height={500}
@@ -128,25 +119,28 @@ const ProductView = () => {
               {/* Right Button */}
               <button
                 onClick={handleNext}
-                className="absolute right-1 md:right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 z-10 flex justify-center items-center border border-[#8f71e1] hover:bg-[#8f71e1] hover:text-white text-[#8f71e1] rounded-full"
+                className="absolute right-1 md:right-2 top-1/2 transform -translate-y-1/2 md:h-10  md:w-10 h-8 w-8 z-10 flex justify-center items-center border border-[#028355] hover:bg-[#028355] hover:text-white text-[#028355] rounded-full"
               >
                 <ArrowRight />
               </button>
             </div>
             {/* Thumbnails */}
             <div className="flex mt-4 space-x-4 md:space-x-8 overflow-x-auto scrollbar-hide">
-              {productData.img.map((item, index) => (
+              {productData.photo.map((item: any, index: any) => (
                 <div
                   key={item.id}
                   onClick={() => handleThumbnailClick(index)}
                   className={`cursor-pointer transition-all ${
                     index === currentImageIndex
-                      ? "border-2 border-[#8f71e1] bg-[#ece9fe] rounded-lg"
+                      ? "border-2 border-[#028355] bg-[#ece9fe] rounded-lg"
                       : "border-2 border-transparent bg-[#ece9fe] rounded-lg"
                   }`}
                 >
                   <Image
-                    src={item.image}
+                    src={
+                      item.img ||
+                      "https://img.freepik.com/premium-photo/zamioculcas-sansevieria-avocado-potted-plants-against-white-wall-home-gardening_73661-914.jpg?ga=GA1.1.406508785.1728154460&semt=ais_hybrid"
+                    }
                     alt={`Thumbnail ${index + 1}`}
                     width={80}
                     height={80}
@@ -159,7 +153,7 @@ const ProductView = () => {
 
           {/* Product Info Section */}
           <div className="col-span-12 md:col-span-6 px-4 md:px-6">
-            <ViewProductInformation />
+            <ViewProductInformation productData={productData} />
           </div>
         </div>
 
@@ -172,8 +166,8 @@ const ProductView = () => {
                 onClick={() => handleTabChange(tab.id)}
                 className={`${
                   activeTab === tab.id
-                    ? "text-[#8f71e1] font-semibold"
-                    : "text-slate-600 hover:text-[#8f71e1]"
+                    ? "text-[#028355] font-semibold"
+                    : "text-slate-600 hover:text-[#028355]"
                 } pb-1`}
               >
                 {tab.name}
@@ -274,7 +268,7 @@ const ProductView = () => {
         </div>
       </div>
       <div>
-        <RelatedProduct />
+        <RelatedProduct categoryId={productData?.categoryId} />
       </div>
     </div>
   );

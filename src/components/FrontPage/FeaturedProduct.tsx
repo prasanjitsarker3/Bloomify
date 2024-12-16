@@ -3,11 +3,13 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { productData } from "../UtlitiFunction/ProductData";
+// import { productData } from "../UtlitiFunction/ProductData";
 import ProductCart from "../Common/ProductCart";
+import { useGetNewProductQuery } from "../Redux/Api/productApi";
 
 const FeaturedProduct: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { data, isLoading } = useGetNewProductQuery({});
 
   const isSmallDevice =
     typeof window !== "undefined" && window.innerWidth < 768;
@@ -26,6 +28,13 @@ const FeaturedProduct: React.FC = () => {
       setCurrentIndex(currentIndex - 1);
     }
   };
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+
+  const productData = data?.data;
+
+  console.log("New Product Data", data?.data);
 
   return (
     <div className="w-full container mx-auto md:px-0 px-8 py-12">
@@ -66,7 +75,7 @@ const FeaturedProduct: React.FC = () => {
       >
         {productData
           ?.slice(currentIndex, currentIndex + (isSmallDevice ? 1 : 4))
-          .map((item) => (
+          .map((item: any) => (
             <ProductCart item={item} key={item.id} />
           ))}
       </motion.div>

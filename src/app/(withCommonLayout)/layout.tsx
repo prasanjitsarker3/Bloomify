@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Spinner } from "@nextui-org/react";
 import Footer from "@/components/Common/Footer";
+import Drawer from "@/components/Common/Drawer";
 
 const CommonLayout = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
@@ -46,6 +47,7 @@ const CommonLayout = ({ children }: { children: React.ReactNode }) => {
         <>
           <Header />
           {children}
+          <Drawer />
           <Footer />
         </>
       )}

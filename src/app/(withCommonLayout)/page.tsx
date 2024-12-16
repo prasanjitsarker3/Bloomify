@@ -3,6 +3,7 @@ import ContactBanner from "@/components/FrontPage/ContactBanner";
 import DiscountBanner from "@/components/FrontPage/DiscountBanner";
 import DiscountTimeShow from "@/components/FrontPage/DiscountTimeShow";
 import FeaturedProduct from "@/components/FrontPage/FeaturedProduct";
+import PlantGallery from "@/components/FrontPage/PlantGallery";
 import PolicyInformation from "@/components/FrontPage/PolicyInformation";
 import ProductBanner from "@/components/FrontPage/ProductBanner";
 import ProductCollection from "@/components/FrontPage/ProductCollection";
@@ -18,6 +19,7 @@ export default function Home() {
       <DiscountBanner />
       {/* <ProductCollection /> */}
       <SummerCollection />
+      <PlantGallery />
       <PolicyInformation />
       <DiscountTimeShow />
       <ContactBanner />

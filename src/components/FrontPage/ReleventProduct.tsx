@@ -3,11 +3,25 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { productData } from "../UtlitiFunction/ProductData";
+// import { productData } from "../UtlitiFunction/ProductData";
 import ProductCart from "../Common/ProductCart";
+import { useGetProductQuery } from "../Redux/Api/productApi";
 
-const RelatedProduct: React.FC = () => {
+const RelatedProduct = ({ categoryId }: { categoryId: string }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const query = {
+    categoryId,
+  };
+
+  const { data, isLoading, isError } = useGetProductQuery(query);
+
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+
+  if (isError || !data?.data?.data) {
+    return <h1>Something went wrong. Please try again later.</h1>;
+  }
 
   const isSmallDevice =
     typeof window !== "undefined" && window.innerWidth < 768;
@@ -26,26 +40,27 @@ const RelatedProduct: React.FC = () => {
       setCurrentIndex(currentIndex - 1);
     }
   };
+  const productData = data?.data?.data || [];
 
   return (
     <div className="w-full container mx-auto md:px-0 px-8 py-12">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="vigaRegular font-semibold text-xl md:text-2xl text-slate-800">
-            Related Product
+          <h1 className="vigaRegular font-semibold text-xl md:text-2xl primaryColor">
+            Related {productData[0]?.category?.name}
           </h1>
         </div>
 
         {/* Arrow Buttons */}
         <div className="flex items-center gap-2">
           <button
-            className="h-12 w-12 flex justify-center items-center border border-[#8f71e1] hover:bg-[#8f71e1] hover:text-white primaryColor text-white rounded-full"
+            className="h-12 w-12 flex justify-center items-center border border-[#028355] hover:bg-[#028355] hover:text-white primaryColor text-white rounded-full"
             onClick={handlePrev}
           >
             <ArrowLeft />
           </button>
           <button
-            className="h-12 w-12 flex justify-center items-center border border-[#8f71e1] hover:bg-[#8f71e1] hover:text-white primaryColor text-white rounded-full"
+            className="h-12 w-12 flex justify-center items-center border border-[#028355] hover:bg-[#028355] hover:text-white primaryColor text-white rounded-full"
             onClick={handleNext}
           >
             <ArrowRight />
@@ -63,13 +78,13 @@ const RelatedProduct: React.FC = () => {
       >
         {productData
           ?.slice(currentIndex, currentIndex + (isSmallDevice ? 1 : 4))
-          .map((item) => (
+          .map((item: any) => (
             <ProductCart item={item} key={item.id} />
           ))}
       </motion.div>
 
       <div className="w-full mx-auto text-center py-8">
-        <button className="px-8 py-2 bg-[#8f71e1] text-white rounded-lg">
+        <button className="px-8 py-2 bg-[#028355] text-white rounded-lg">
           See More
         </button>
       </div>

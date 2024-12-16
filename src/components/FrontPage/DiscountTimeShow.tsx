@@ -53,33 +53,33 @@ const DiscountTimeShow = () => {
               now to make your space greener!
             </h2>
 
-            <div className="flex md:space-x-4 space-x-2 text-base md:text-xl font-semibold text-gray-600">
-              <div className=" border-2 border-[#028355] md:p-3 p-1">
-                <span className="md:text-4xl text-xl font-bold text-primaryColor">
+            <div className="flex md:space-x-4 space-x-4 text-base md:text-xl font-semibold text-gray-600">
+              <div className=" bg-[#028355] text-white text-center rounded-lg md:p-3 p-1 overflow-hidden">
+                <span className="md:text-4xl text-xl font-bold ">
                   {timeLeft.days}
                 </span>{" "}
                 Days
               </div>
-              <div className=" border-2 border-[#028355] md:p-3 p-1">
+              <div className=" bg-[#028355] text-white text-center rounded-lg md:p-3 p-1 overflow-hidden">
                 <span className="md:text-4xl text-xl font-bold text-primaryColor">
                   {timeLeft.hours}
                 </span>{" "}
                 Hours
               </div>
-              <div className=" border-2 border-[#028355] md:p-3 p-1">
+              <div className=" bg-[#028355] text-white text-center rounded-lg md:p-3 p-1 overflow-hidden">
                 <span className="md:text-4xl text-xl font-bold text-primaryColor">
                   {timeLeft.minutes}
                 </span>{" "}
                 Minutes
               </div>
-              <div className=" border-2 border-[#028355] md:p-3 p-1">
+              <div className=" bg-[#028355] text-white text-center rounded-lg md:p-3 p-1 overflow-hidden">
                 <span className="md:text-4xl text-xl font-bold text-primaryColor">
                   {timeLeft.seconds}
                 </span>{" "}
                 Seconds
               </div>
             </div>
-            <button className="primaryColorBg text-white py-2 px-6 rounded-md hover:bg-green-700 transition">
+            <button className="border border-[#028355] hover:bg-[#028355] hover:text-white transition duration-300 ease-in-out primaryColor  py-2 px-12 rounded-full">
               Get The Deal
             </button>
           </div>
