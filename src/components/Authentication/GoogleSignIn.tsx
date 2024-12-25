@@ -1,4 +1,3 @@
-// import { useGoogleLogin } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
 import React from "react";
 import { toast } from "sonner";
@@ -32,7 +31,7 @@ const GoogleSignIn = () => {
   };
 
   return (
-    <div>
+    <div className="">
       <GoogleLogin
         onSuccess={handleGoogleLogin}
         onError={() => toast.error("Login failed. Please try again.")}

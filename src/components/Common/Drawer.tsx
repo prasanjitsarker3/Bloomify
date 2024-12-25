@@ -6,6 +6,7 @@ import { useAppSelector } from "../Redux/hooks";
 import Image from "next/image";
 import { removeFromCart } from "../Redux/Slice/cartSlice";
 import { Trash } from "lucide-react";
+import Link from "next/link";
 
 const Drawer = () => {
   const isDrawerOpen = useAppSelector(
@@ -80,9 +81,11 @@ const Drawer = () => {
           {/* Checkout Button */}
           {cartItems.length > 0 ? (
             <>
-              <button className="bg-[#028355] text-white py-2 px-4 rounded-full w-full">
-                Checkout
-              </button>
+              <Link href={"/checkout"}>
+                <button className="bg-[#028355] text-white py-2 px-4 rounded-full w-full">
+                  Checkout
+                </button>
+              </Link>
             </>
           ) : (
             <>

@@ -71,7 +71,7 @@ const LoginPage = () => {
       {/* Login Form */}
       <div className="relative z-10 flex items-center justify-center min-h-screen">
         <div className=" p-8 rounded-lg  max-w-sm w-full backdrop-blur-md bg-white/30 ">
-          <h1 className="text-2xl font-semibold text-center mb-6 primaryColor">
+          <h1 className="text-2xl font-semibold text-center mb-6 text-white">
             Login to Plants
           </h1>
           <form onSubmit={handleSubmit(handleEmailLogin)} className="space-y-4">
@@ -147,7 +147,7 @@ const LoginPage = () => {
           <div className="text-center mt-6 text-white">
             <p>
               Don't have an account?{" "}
-              <Link href="/register" className=" primaryColor font-semibold">
+              <Link href="/register" className=" text-white font-normal">
                 Sign up
               </Link>
             </p>

@@ -10,6 +10,7 @@ import { RootState } from "../Redux/store";
 import { toast } from "sonner";
 import { addToCart } from "../Redux/Slice/cartSlice";
 import { usePathname, useRouter } from "next/navigation";
+import ProductOrderModal from "../CustomModal/ProductOrderModa";
 
 export const customStyles = {
   itemShapes: Star,
@@ -20,19 +21,24 @@ export const customStyles = {
 const ViewProductInformation = ({ productData }: { productData: any }) => {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
+  const [isModalOpen, setModalOpen] = useState(false);
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state: RootState) => state.cart.items);
   const accessToken = useAppSelector(
-    (state: RootState) => state.auth.accessToken
+    (state: RootState) => state.auth?.accessToken
   );
   const router = useRouter();
   const pathname = usePathname();
 
   const handleBuyNow = () => {
+    if (!selectedSize) {
+      toast.warning("Please select a size.");
+      return;
+    }
     if (!accessToken) {
       router.push(`/login?redirect=${pathname}`);
     } else {
-      toast.success("Proceeding to checkout...");
+      setModalOpen(true);
     }
   };
 
@@ -170,6 +176,14 @@ const ViewProductInformation = ({ productData }: { productData: any }) => {
           </button>
         </div>
       </div>
+      <ProductOrderModal
+        selectedSize={selectedSize}
+        quantity={quantity}
+        productData={productData}
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+      />
+      ;
     </div>
   );
 };

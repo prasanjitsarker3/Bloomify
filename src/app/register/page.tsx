@@ -7,6 +7,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { userRegister } from "@/components/Authentication/userRegister";
 import VerifyOtpModal from "@/components/Authentication/VerifyOtpModal";
+import GoogleSignIn from "@/components/Authentication/GoogleSignIn";
 
 interface FormData {
   name: string;
@@ -169,18 +170,11 @@ const RegisterPage = () => {
             <hr className="w-1/3" />
           </div>
 
-          <button
-            // onClick={handleGoogleLogin}
-            className="w-full py-3 bg-[#028355] text-white rounded-full flex items-center justify-center space-x-2 transition duration-300"
-          >
-            <FaGoogle />
-            <span>Sign up with Google</span>
-          </button>
-
+          <GoogleSignIn />
           <div className="text-center mt-6 text-white">
             <p>
               Already have an account?{" "}
-              <Link href="/login" className="text-[#028355] font-semibold">
+              <Link href="/login" className="text-white font-normal">
                 Login
               </Link>
             </p>

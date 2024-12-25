@@ -1,18 +1,43 @@
-/* eslint-disable react/no-unescaped-entities */
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Search, ShoppingBag, UserRound, X } from "lucide-react";
+import { Router, Search, ShoppingBag, X } from "lucide-react";
 import { RiMenu2Fill } from "react-icons/ri";
-import { getCartLength } from "../UtlitiFunction/getCartLength";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useUserInfo } from "../Authentication/userInfo";
+import { logoutUser } from "../Authentication/logoutUser";
+import { useAppDispatch } from "../Redux/hooks";
+import { logOut } from "../Redux/Slice/authSlice";
+import { IoIosArrowDown } from "react-icons/io";
+import { useGetCategoryQuery } from "../Redux/Api/categoryApi";
+
+const subItem = [
+  {
+    name: "Section",
+    pathName: "/section",
+  },
+  {
+    name: "Filter",
+    pathname: "/filter",
+  },
+  {
+    name: "Hero",
+    pathname: "/hero",
+  },
+];
 
 const Header = () => {
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [scrolling, setScrolling] = useState(false);
   const pathname = usePathname();
+  const user = useUserInfo();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  const { data, isLoading } = useGetCategoryQuery({});
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -44,6 +69,16 @@ const Header = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const handleLogout = async () => {
+    logoutUser(router);
+    dispatch(logOut());
+  };
+
+  if (isLoading) {
+    return <h1 className=" text-center pt-12 ">Loading</h1>;
+  }
+  const categoryData = data?.data?.data || [];
 
   return (
     <motion.header
@@ -88,12 +123,57 @@ const Header = () => {
               <Link href={"/"} className="text-lg text-white cursor-pointer">
                 Home
               </Link>
-              <Link
-                href={`/category/${1}`}
-                className="text-lg text-white cursor-pointer"
+              <div
+                className="relative cursor-pointer"
+                onMouseEnter={() => setIsSubmenuOpen(true)}
+                onMouseLeave={() => setIsSubmenuOpen(false)}
               >
-                Category
-              </Link>
+                <div
+                  className={`flex items-center gap-0.5 text-lg text-white cursor-pointer`}
+                >
+                  Category
+                  <IoIosArrowDown
+                    className={`size-4 mt-1 duration-200 transition-all ${
+                      isSubmenuOpen ? "-rotate-180" : "rotate-0"
+                    }`}
+                  />
+                </div>
+
+                {isSubmenuOpen && (
+                  <div
+                    className="absolute top-[100%] -left-14 overflow-hidden"
+                    style={{
+                      boxShadow: "0px 12px 16px -4px rgba(16, 24, 40, 0.08)",
+                    }}
+                  >
+                    <motion.div
+                      initial={{ height: "px-[1px]", opacity: 0 }}
+                      animate={{
+                        height: "fit-content",
+                        opacity: 1,
+                      }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{
+                        duration: 0.3,
+                        ease: "easeInOut",
+                      }}
+                      style={{
+                        boxShadow: "0px 12px 16px -4px rgba(16, 24, 40, 0.08)",
+                      }}
+                      className={`text-white text-start px-2 space-y-1  min-w-[250px] py-6 mt-6 flex flex-col rounded-xl bg-white/30 backdrop-blur-lg border border-white/20`}
+                    >
+                      {categoryData.map((data: any) => (
+                        <div
+                          key={data.id}
+                          className=" hover:bg-[#028355] hover:text-white py-1 px-2"
+                        >
+                          <Link href={`/category/${data.id}`}>{data.name}</Link>
+                        </div>
+                      ))}
+                    </motion.div>
+                  </div>
+                )}
+              </div>
               <Link
                 href={"/product"}
                 className="text-lg text-white cursor-pointer"
@@ -133,11 +213,20 @@ const Header = () => {
               <UserRound />
             </div> */}
             <div>
-              <Link href={"/login"}>
-                <button className=" py-1 px-6 rounded-full border border-white">
-                  Sign In
+              {user ? (
+                <button
+                  onClick={handleLogout}
+                  className=" py-1 px-6 rounded-full border border-white"
+                >
+                  logout
                 </button>
-              </Link>
+              ) : (
+                <Link href={"/login"}>
+                  <button className=" py-1 px-6 rounded-full border border-white">
+                    Sign In
+                  </button>
+                </Link>
+              )}
             </div>
           </div>
           <button className="md:hidden text-white" onClick={toggleMenu}>
