@@ -1,11 +1,12 @@
+import AboutPageBanner from "@/components/FrontPage/AboutPageBanner";
+import AboutVideoBanner from "@/components/FrontPage/AboutVideoBanner";
 import React from "react";
 
 const AboutPage = () => {
   return (
     <div>
-      <div className=" pt-20 w-full container mx-auto">
-        <h1>About Us Information</h1>
-      </div>
+      <AboutPageBanner />
+      <AboutVideoBanner />
     </div>
   );
 };

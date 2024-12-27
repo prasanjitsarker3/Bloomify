@@ -8,10 +8,13 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useUserInfo } from "../Authentication/userInfo";
 import { logoutUser } from "../Authentication/logoutUser";
-import { useAppDispatch } from "../Redux/hooks";
+import { useAppDispatch, useAppSelector } from "../Redux/hooks";
 import { logOut } from "../Redux/Slice/authSlice";
 import { IoIosArrowDown } from "react-icons/io";
 import { useGetCategoryQuery } from "../Redux/Api/categoryApi";
+import { RootState } from "../Redux/store";
+import { toggleDrawer } from "../Redux/Slice/drawerSlice";
+import UserProfileDropDown from "./UserNavbarDropdown";
 
 const subItem = [
   {
@@ -36,6 +39,11 @@ const Header = () => {
   const user = useUserInfo();
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const cartItems = useAppSelector((state: RootState) => state.cart.items);
+
+  const handleToggle = () => {
+    dispatch(toggleDrawer());
+  };
 
   const { data, isLoading } = useGetCategoryQuery({});
 
@@ -70,11 +78,6 @@ const Header = () => {
     };
   }, []);
 
-  const handleLogout = async () => {
-    logoutUser(router);
-    dispatch(logOut());
-  };
-
   if (isLoading) {
     return <h1 className=" text-center pt-12 ">Loading</h1>;
   }
@@ -84,7 +87,7 @@ const Header = () => {
     <motion.header
       className={`
       ${
-        pathname === "/"
+        pathname === "/" || pathname === "/about"
           ? scrolling
             ? "primaryColorBg fixed top-0 pt-0 mt-0 dark:bg-slate-800 w-full z-40"
             : "w-full z-40 fixed bg-none"
@@ -160,7 +163,15 @@ const Header = () => {
                       style={{
                         boxShadow: "0px 12px 16px -4px rgba(16, 24, 40, 0.08)",
                       }}
-                      className={`text-white text-start px-2 space-y-1  min-w-[250px] py-6 mt-6 flex flex-col rounded-xl bg-white/30 backdrop-blur-lg border border-white/20`}
+                      className={`text-white text-start px-2 space-y-1 min-w-[250px] py-6 mt-6 flex flex-col rounded-xl 
+                        ${
+                          scrolling
+                            ? "bg-[#028355]/80"
+                            : pathname === "/"
+                            ? "bg-white/10"
+                            : "bg-black/30"
+                        } 
+                        backdrop-blur-lg border border-white/20`}
                     >
                       {categoryData.map((data: any) => (
                         <div
@@ -184,7 +195,7 @@ const Header = () => {
                 href={"/about"}
                 className="text-lg text-white cursor-pointer"
               >
-                Contact
+                About Us
               </Link>
             </div>
           </div>
@@ -202,10 +213,13 @@ const Header = () => {
               />
             </div>
 
-            <div className="hidden md:block relative flex items-center">
+            <div
+              onClick={handleToggle}
+              className="hidden md:block relative flex items-center cursor-pointer"
+            >
               <ShoppingBag className="h-6 w-6 text-white" />
               <span className="absolute -top-1 -right-2 bg-gray-600 text-white text-xs font-semibold w-4 h-4 rounded-full flex items-center justify-center">
-                0
+                {cartItems.length || 0}
               </span>
             </div>
 
@@ -214,12 +228,13 @@ const Header = () => {
             </div> */}
             <div>
               {user ? (
-                <button
-                  onClick={handleLogout}
-                  className=" py-1 px-6 rounded-full border border-white"
-                >
-                  logout
-                </button>
+                // <button
+                //   onClick={handleLogout}
+                //   className=" py-1 px-6 rounded-full border border-white"
+                // >
+                //   logout
+                // </button>
+                <UserProfileDropDown />
               ) : (
                 <Link href={"/login"}>
                   <button className=" py-1 px-6 rounded-full border border-white">

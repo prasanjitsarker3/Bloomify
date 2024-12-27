@@ -9,14 +9,7 @@ const ContactBanner = () => {
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center bg-gray-100 p-8">
         <div className="">
-          <Image
-            src={
-              "https://img.freepik.com/free-photo/map-marked-with-pins-by-tourist_23-2148232411.jpg?ga=GA1.1.406508785.1728154460&semt=ais_hybrid"
-            }
-            alt=""
-            width={500}
-            height={100}
-          />
+          <Image src={"/contactBanner.png"} alt="" width={500} height={200} />
         </div>
         <div className="bg-gray-100 p-6 rounded-lg">
           <form>
