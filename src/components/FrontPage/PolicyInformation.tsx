@@ -22,8 +22,9 @@ const PolicyInformation = () => {
       icon: "/Photo/payment.png",
     },
   ];
+
   return (
-    <div className="w-full container mx-auto md:px-0 px-8 pt-6 pb-12">
+    <div className="w-full container mx-auto md:px-0 px-8 py-12">
       <div className="grid grid-cols-12 md:gap-0 gap-5 primaryColorBg py-8 px-4">
         {policyData?.map((data) => (
           <div key={data.id} className="col-span-12 md:col-span-4">
@@ -43,6 +44,7 @@ const PolicyInformation = () => {
           </div>
         ))}
       </div>
+
     </div>
   );
 };

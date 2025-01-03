@@ -3,55 +3,31 @@ import React from "react";
 
 const ContactBanner = () => {
   return (
-    <div className="w-full container mx-auto py-12 md:px-0 px-8">
-      <h1 className=" font-semibold text-3xl primaryColor vigaRegular py-5">
-        Get In Touch
-      </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center bg-gray-100 p-8">
-        <div className="">
-          <Image src={"/contactBanner.png"} alt="" width={500} height={200} />
-        </div>
-        <div className="bg-gray-100 p-6 rounded-lg">
-          <form>
-            <div className="mb-4">
-              <input
-                type="text"
-                id="name"
-                className="w-full  rounded-md py-3 px-4 focus:outline-none focus:none focus:ring-primaryColor"
-                placeholder="Enter your name"
-              />
-            </div>
-            <div className="mb-4">
-              <input
-                type="email"
-                id="email"
-                className="w-full  rounded-md py-3 px-4 focus:outline-none focus:none focus:ring-primaryColor"
-                placeholder="Enter your email"
-              />
-            </div>
-            <div className="mb-4">
-              <input
-                type="tel"
-                id="number"
-                className="w-full  rounded-md py-3 px-4 focus:outline-none focus:none focus:ring-primaryColor"
-                placeholder="Enter your phone number"
-              />
-            </div>
-            <div className="mb-4">
-              <textarea
-                id="message"
-                rows={3}
-                className="w-full  rounded-md py-3 px-4 focus:outline-none focus:none focus:ring-primaryColor"
-                placeholder="Write your message"
-              ></textarea>
-            </div>
-            <button
-              type="submit"
-              className="primaryColorBg text-white py-2 w-full px-6 rounded-md hover:bg-primaryColor-dark transition duration-300"
-            >
-              Send Message
+    <div className=" w-full container mx-auto md:px-0 px-4 py-12">
+      <div className=" h-96 flex justify-center items-center text-center bg-gray-100 rounded-xl text-slate-600">
+        <div className=" space-y-3">
+          <div className=" space-y-1">
+            <h1 className=" text-center text-2xl lg:text-3xl font-medium ">
+              Subscribe to our email   
+            </h1>
+            <h1 className=" text-center text-2xl lg:text-3xl font-medium ">
+              newsletter and get 15% off
+            </h1>
+          </div>
+          <p className=" text-lg font-normal ">
+            Be the first to know about the latest in tech trends, exclusive
+            offers, and exciting product launches by subscribing to our
+            newsletter.
+          </p>
+          <div className=" space-x-4">
+            <input
+              placeholder="Your Email Address"
+              className=" py-3 2xl:py-4 px-6 2xl:px-8 rounded-full w-96"
+            />
+            <button className=" py-3 2xl:py-4  px-6 2xl:px-8 rounded-full bg-primary text-white">
+              Subscribe
             </button>
-          </form>
+          </div>
         </div>
       </div>
     </div>

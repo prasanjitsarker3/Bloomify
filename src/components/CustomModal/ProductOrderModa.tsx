@@ -119,26 +119,23 @@ const ProductOrderModal = ({
       <ModalContent>
         <ModalBody>
           <div className="mt-5 space-y-3 bg-gray-50 rounded-lg">
-            <h1 className="text-xl font-medium primaryColor px-4 ">
-              Confirm Your Order
-            </h1>
-            <div className=" grid grid-cols-2 items-center w-full gap-4 bg-gray-50 ">
-              <div className="flex-1 py-2 px-4 bg-gray-100 text-lg text-slate-700">
-                <span className="font-normal text-slate-800">Name:</span>{" "}
-                {productData?.name}
+            <div className=" px-4"> 
+              <h2 className="text-xl font-semibold mb-4">Price Summary</h2>
+              <ul className="space-y-2">
+                <li className="flex justify-between">
+                  <span>
+                    {productData.name} (x{quantity})
+                  </span>
+                  <span>size-{selectedSize || "No Select"}</span>
+                  <span>${totalPrice}</span>
+                </li>
+              </ul>
+              <hr className="my-4" />
+              <div className="flex justify-between font-semibold text-lg">
+                <span>Total</span>
+                <span>${totalPrice}</span>
               </div>
-              <div className="flex-1 py-2 px-4 bg-gray-100 text-lg text-slate-700">
-                <span className="font-normal text-slate-800">Size:</span>{" "}
-                {selectedSize || "Not selected"}
-              </div>
-              <div className="flex-1 py-2 px-4 bg-gray-100 text-lg text-slate-700">
-                <span className="font-normal text-slate-800">Quantity:</span>{" "}
-                {quantity}
-              </div>
-              <div className="flex-1 py-2 px-4 bg-gray-100 text-lg text-slate-700">
-                <span className="font-normal text-slate-800">Total Price:</span>{" "}
-                $ {totalPrice}
-              </div>
+              <hr className="mb-4" />
             </div>
 
             <form className=" grid grid-cols-2 gap-4 p-4">
@@ -221,17 +218,17 @@ const ProductOrderModal = ({
           </div>
         </ModalBody>
 
-        <ModalFooter className="w-full items-center space-x-4">
+        <ModalFooter className="w-full items-center space-x-4 mt-0 pt-0">
           <Button
             size="md"
-            className=" primaryColorBg text-white font-bold w-full flex items-center justify-center gap-2"
+            className=" primaryColorBg text-white font-bold w-full flex items-center justify-center gap-2 rounded-sm"
             onClick={handleSubmit(handleCashPayment)}
           >
             <DollarSign size={16} /> Cash Payment
           </Button>
           <Button
             size="md"
-            className=" primaryColorBg text-white font-bold w-full flex items-center justify-center gap-2"
+            className=" primaryColorBg text-white font-bold w-full flex items-center justify-center gap-2 rounded-sm"
             onClick={handleSubmit(handleOnlinePayment)}
           >
             <CreditCard size={16} /> Online Payment

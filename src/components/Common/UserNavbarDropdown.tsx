@@ -56,15 +56,15 @@ const UserProfileDropDown = () => {
         >
           <li
             role="menuitem"
-            className="cursor-pointer text-slate-800 flex w-full text-sm 2xl:text-base items-center rounded-md px-3 py-2 transition-all hover:bg-primary focus:bg-primary active:bg-primary hover:text-white"
+            className="cursor-pointer text-slate-800 flex w-full text-sm 2xl:text-base items-center rounded-md px-3 py-2 transition-all focus:bg-primary active:bg-primary hover:bg-[#028355] hover:text-white"
           >
             {user?.name || "N/A"}
           </li>
           <li
             role="menuitem"
-            className="cursor-pointer text-slate-800 flex w-full text-sm 2xl:text-base items-center rounded-md px-3 py-2 transition-all hover:bg-primary focus:bg-primary active:bg-primary hover:text-white"
+            className="cursor-pointer text-slate-800 flex w-full text-sm 2xl:text-base items-center rounded-md px-3 py-2 transition-all hover:bg-[#028355] focus:bg-primary active:bg-primary hover:text-white"
           >
-            <Link href={"/dashboard/admin"}>Dashboard</Link>
+            <Link href={"/dashboard"}>Dashboard</Link>
           </li>
           <li
             onClick={handleLogOutUser}

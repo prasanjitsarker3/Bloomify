@@ -183,7 +183,7 @@ const ViewProductInformation = ({ productData }: { productData: any }) => {
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
       />
-      ;
+      
     </div>
   );
 };

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { Eye } from "lucide-react";
 import Image from "next/image";
 import React from "react";
@@ -54,9 +55,8 @@ const PlantGallery = () => {
   return (
     <div className=" py-12 w-full container mx-auto md:px-0 px-4">
       <div>
-        <h1 className=" text-center text-3xl text-slate-900 pb-6">
-          There is no such thing as a green thumb.
-          <br /> Plants take practice — just like anything else.
+        <h1 className=" text-center text-3xl 2xl:text-4xl vigaRegular font-bold text-primary pb-12">
+          🌳🌿 <br /> Celebrate Nature's Beauty
         </h1>
       </div>
 

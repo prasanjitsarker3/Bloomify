@@ -8,13 +8,14 @@ import PolicyInformation from "@/components/FrontPage/PolicyInformation";
 import ProductBanner from "@/components/FrontPage/ProductBanner";
 import ProductCollection from "@/components/FrontPage/ProductCollection";
 import SummerCollection from "@/components/FrontPage/SummarCollection";
+import TopProductBanner from "@/components/FrontPage/TopProduct";
 
 export default function Home() {
   return (
     <div className="bg-white">
       <Banner />
       <ProductBanner />
-
+       <TopProductBanner/>
       <FeaturedProduct />
       <DiscountBanner />
       {/* <ProductCollection /> */}

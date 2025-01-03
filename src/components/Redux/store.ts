@@ -15,6 +15,8 @@ import globalSidebar from "./Slice/sideBarSlice";
 import drawerReducer from "./Slice/drawerSlice";
 import { baseApi } from "./baseApi";
 import cartReducer from "./Slice/cartSlice";
+import breadcrumbReducer from  "./Slice/breadcrumbSlice"
+
 
 const authPersistConfig = {
   key: "auth",
@@ -34,6 +36,7 @@ const store = configureStore({
     global: globalSidebar,
     drawer: drawerReducer,
     cart: persistedCartReducer,
+    breadcrumb:breadcrumbReducer
   },
 
   middleware: (getDefaultMiddleware) =>

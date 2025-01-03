@@ -10,6 +10,8 @@ const DiscountTimeShow = () => {
     minutes: 0,
     seconds: 0,
   });
+  const [noGlassImage, setNoGlassImage] = useState<number | null>(null); // Explicit type
+
 
   // Set the target date for the discount deadline
   const discountDeadline = new Date("2024-12-31T23:59:59").getTime();
@@ -36,6 +38,36 @@ const DiscountTimeShow = () => {
 
     return () => clearInterval(timer);
   }, [discountDeadline]);
+
+  const bannerImage = [
+    {
+      id: 1,
+      img: "https://img.freepik.com/free-photo/wood-desk-with-laptop-plant_23-2148267494.jpg?ga=GA1.1.1524916337.1735299616&semt=ais_hybrid",
+    },
+    {
+      id: 2,
+      img: "https://img.freepik.com/free-photo/potted-plants-with-blank-slate-desk_23-2147929460.jpg?ga=GA1.1.1524916337.1735299616&semt=ais_hybrid",
+    },
+    {
+      id: 3,
+      img: "https://img.freepik.com/free-photo/pot-plant-with-stack-books-desk_1170-847.jpg?ga=GA1.1.1524916337.1735299616&semt=ais_hybrid",
+    },
+    {
+      id: 4,
+      img: "https://img.freepik.com/free-photo/wood-desk-with-laptop-plant_23-2148267494.jpg?ga=GA1.1.1524916337.1735299616&semt=ais_hybrid",
+    },
+  ];
+
+
+  useEffect(() => {
+    const glassEffectTimer = setInterval(() => {
+      const randomIndex = Math.floor(Math.random() * bannerImage.length);
+      setNoGlassImage(bannerImage[randomIndex].id);
+    }, 2000);
+
+    return () => clearInterval(glassEffectTimer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="w-full container mx-auto py-12 md:px-0 px-8">
@@ -86,15 +118,36 @@ const DiscountTimeShow = () => {
         </div>
 
         {/* Right Section */}
-        <div className=" flex justify-center">
-          <Image
-            src="/TimePhoto.png"
-            alt="Plant Discount"
-            width={500}
-            height={500}
-            className="rounded-lg"
-          />
-        </div>
+        <div className="grid grid-cols-2 gap-4">
+      {bannerImage.map((image, index) => {
+        const heightClass = 
+          index === 0 ? "h-[15rem]" : 
+          index === 1 ? "h-[13rem]" : 
+          index === 2 ? "h-[13rem]" : 
+          "h-[15rem] -mt-8";
+
+        return (
+          <div
+            key={image.id}
+            onMouseEnter={() => setNoGlassImage(image.id)}
+            onMouseLeave={() => setNoGlassImage(null)}
+            className={`relative overflow-hidden rounded-lg ${heightClass} ${
+              noGlassImage === image.id ? "" : " bg-white/20 backdrop-blur-xl"
+            }`}
+          >
+            <Image
+              src={image.img}
+              alt=""
+              width={300}
+              height={300}
+              className={`h-full w-full object-cover transition duration-300 ease-in-out ${
+                noGlassImage === image.id ? "blur-none" : " blur-lg"
+              }`}
+            />
+          </div>
+        );
+      })}
+    </div>
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+import build from "next/dist/build";
 import { baseApi } from "../baseApi";
 
 const productApi = baseApi.injectEndpoints({
@@ -24,6 +25,13 @@ const productApi = baseApi.injectEndpoints({
       }),
       providesTags: ["product"],
     }),
+    getTopProduct: builder.query({
+      query:() =>({
+        url:"/product/topProduct",
+        method:"GET"
+      }),
+      providesTags: ["product"],
+    })
   }),
 });
 
@@ -31,4 +39,5 @@ export const {
   useGetProductQuery,
   useGetSingleProductQuery,
   useGetNewProductQuery,
+  useGetTopProductQuery
 } = productApi;
